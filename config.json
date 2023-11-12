@@ -1,0 +1,8 @@
+{
+  "threads": 100,
+  "prefix": "http",
+  "checkURL": "http://ip-api.com/json?fields=8194",
+  "successKey": "countryCode",
+  "proxy-filepath": "data/proxies808.txt",
+  "timeout": 10
+}
