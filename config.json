@@ -1,5 +1,5 @@
 {
-  "threads": 100,
+  "threads": 5000,
   "prefix": "http",
   "checkURL": "http://ip-api.com/json?fields=8194",
   "successKey": "countryCode",
