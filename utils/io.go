@@ -1,24 +1,19 @@
 package utils
 
 import (
+	"Kraken/config"
 	"bufio"
 	"fmt"
 	"github.com/enriquebris/goconcurrentqueue"
 	"os"
-	"regexp"
 	"strings"
 	"time"
 )
 
-var proxyRegex = regexp.MustCompile(`^\d{1,3}(\.\d{1,3}){3}:\d{1,5}$`)
-
-func isValidProxy(proxy string) bool {
-	return proxyRegex.MatchString(proxy)
-}
-
 func LoadProxies(filename string, prefix string) (*goconcurrentqueue.FIFO, error) {
 	file, err := os.Open(filename)
 	if err != nil {
+		HandleError(err)
 		return nil, err
 	}
 	defer func(file *os.File) {
@@ -37,11 +32,9 @@ func LoadProxies(filename string, prefix string) (*goconcurrentqueue.FIFO, error
 		line = strings.ReplaceAll(line, "\t", "")
 		line = strings.ReplaceAll(line, " ", "")
 		line = strings.TrimSpace(line)
-		if !isValidProxy(line) {
-			break
-		}
 		err := queue.Enqueue(prefix + "://" + line)
 		if err != nil {
+			HandleError(err)
 			return nil, err
 		}
 	}
@@ -63,6 +56,8 @@ func AppendFile(FileName string, Content string) {
 }
 
 func CreateFolderAndFiles() (folderName string, err error) {
+	_ = os.Mkdir("Results", 0755)
+	_ = os.Mkdir("data", 0755)
 	folderName = time.Now().Format("02-01-2006 15-04-05")
 	fullPath := "Results/" + folderName
 	if _, err := os.Stat(fullPath); os.IsNotExist(err) {
@@ -82,4 +77,13 @@ func CreateFolderAndFiles() (folderName string, err error) {
 		file.Close()
 	}
 	return fullPath, nil
+}
+func HandleError(Err error) bool {
+	if Err != nil {
+		if config.GlobalConfig.Debug {
+			fmt.Println(Err)
+			return true
+		}
+	}
+	return false
 }

@@ -9,12 +9,15 @@ import (
 	"log"
 	"net/http"
 	"sync"
+	"time"
 )
 
 var stats *utils.Stats
 
 func init() {
 	config.Load("config.json")
+	output, _ := utils.CreateFolderAndFiles()
+	config.GlobalConfig.OutputFolder = output
 	log.SetOutput(ioutil.Discard)
 	utils.PrintLogo()
 	stats = utils.InitStats()
@@ -28,10 +31,12 @@ func StartChecker() {
 	for i := 0; i < config.GlobalConfig.Threads; i++ {
 		proxy, err := proxyQueue.Dequeue()
 		if err != nil {
+			utils.HandleError(err)
+
 			break
 		}
 		transport := checker.GetTransport(proxy.(string))
-		clientPool = append(clientPool, &http.Client{Transport: transport})
+		clientPool = append(clientPool, &http.Client{Transport: transport, Timeout: time.Duration(config.GlobalConfig.Timeout) * time.Second})
 	}
 
 	go stats.ConsoleStats()
@@ -45,6 +50,7 @@ func StartChecker() {
 			for {
 				proxy, err := proxyQueue.Dequeue()
 				if err != nil {
+					utils.HandleError(err)
 					return
 				}
 				checker.CheckProxyWithClient(stats, c, proxy.(string))

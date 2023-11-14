@@ -85,10 +85,6 @@ func (s *Stats) ConsoleStats() {
 			}
 		}
 		border := "+" + strings.Repeat("-", maxLen+2) + "+"
-		//numLinesUp := len(stats) + 2
-		//if s.hasPrinted {
-		//	fmt.Printf("\033[%dA", numLinesUp)
-		//}
 		fmt.Println(border)
 		for _, stat := range stats {
 			fmt.Printf("| %-*s |\n", maxLen, stat)
@@ -99,12 +95,4 @@ func (s *Stats) ConsoleStats() {
 		time.Sleep(time.Millisecond * 1000)
 
 	}
-}
-
-func HandleError(Err error) bool {
-	if Err != nil {
-		//fmt.Println(Err)
-		return true
-	}
-	return false
 }
