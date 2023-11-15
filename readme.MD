@@ -1,6 +1,10 @@
 # Kraken Advanced Proxy Checker
 
-![Kraken Logo](https://i.imgur.com/RTUdcfp.png)
+<h1 align="center">
+  <a href="https://github.com/xvertile/Kraken">
+    <img src="https://i.imgur.com/RTUdcfp.png" alt="Logo">
+  </a>
+</h1>
 
 Kraken is a powerful, cross-platform proxy checker designed to offer blazing fast speed and support for both HTTP and SOCKS proxies. It's built with simplicity and efficiency in mind, ensuring reliable performance across various environments.
 
@@ -38,3 +42,7 @@ Head over to https://github.com/xvertile/Kraken/releases/latest and download the
 2. Clone Repository: ``git clone https://github.com/xvertile/Kraken.git``  to clone the Kraken repository.
 2. Modify the ``config.json`` for your needs.
 3. Run: Navigate to the cloned directory and run ```go run main.go``` to start the proxy checker.
+
+
+### Credits
+The checker.go file was based off the xProxy checker by [0xF7A4C6](https://github.com/0xF7A4C6/XProxy)
